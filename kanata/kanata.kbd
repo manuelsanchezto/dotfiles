@@ -1,0 +1,161 @@
+﻿(defcfg
+    process-unmapped-keys yes
+    block-unmapped-keys no
+    danger-enable-cmd yes
+;;  icon-match-layer-name no ;;|yes| match layer name to icon files even without an explicit (icon name.ico) config
+    tooltip-layer-changes no
+    tooltip-no-base true
+    notify-cfg-reload true
+    notify-cfg-reload-silent true
+    concurrent-tap-hold true
+)
+
+(deflocalkeys-win
+;; found them on qmk config when using the kb the keyCode
+  ñ 192
+  ¡ 221
+  ´ 222
+  º 220
+  ` 186
+  ç 191
+  ' 219
+  + 187
+)
+
+;; global variables
+(defvar
+  tap-timeout   300
+  hold-timeout  300
+  tt $tap-timeout
+  ht $hold-timeout
+)
+
+(defalias
+  lnav (layer-while-held U_NAV)
+  lsym (layer-while-held U_SYM)
+  lnum (layer-while-held U_NUMERIC)
+)
+
+(defalias
+  atw (tap-hold $tt $ht a met)
+  sta (tap-hold $tt $ht s lalt)
+  dtc (tap-hold $tt $ht d lctrl)
+  fts (tap-hold $tt $ht f lshft)
+  jts (tap-hold $tt $ht j lshft)
+  ktc (tap-hold $tt $ht k lctrl)
+  lta (tap-hold $tt $ht l lalt)
+  nntw (tap-hold $tt $ht ñ met)
+  ntornum (tap-hold $tt $ht ent @lsym)
+  tbornav (tap-hold $tt $ht tab @lnav)
+  lslast  (layer-while-held U_NUMERIC)
+  comillas S-2
+  arroba RA-2
+  exclam S-1
+  hash RA-3
+  dollar S-4
+  percent S-5
+  carrot S-`
+  pipe RA-1
+  opques S-¡
+  clques S-'
+  aste S-+
+  plus +
+  ampersand S-6
+  virgu RA-4
+  equals S-0
+  winbar RA-º
+  linbar S-7
+  opbracket RA-`
+  clbracket RA-+
+  opkeys RA-´
+  clkeys RA-ç
+)
+
+(defalias
+  oslctrl  (one-shot 500 lctrl)
+  oslalt   (one-shot 500 lalt)
+  osralt   (one-shot 500 ralt)
+  oslshift (one-shot 500 lshft)
+  oslmet   (one-shot 500 met)
+)
+
+(defsrc
+    ;; left
+    q       w       e       r       t
+    a       s       d       f       g
+    z       x       c       v       b
+                    met    bspc    spc             
+    ;; right
+    y       u       i       o       p
+    h       j       k       l       ñ
+    n       m       ,       .       -
+    1    ent ralt
+  )
+  
+(deflayer U_BASE
+    ;; left
+    q            w          e          r        t
+    a            s          d          f        g
+    z            x          c          v        b
+    esc        spc        del             
+    ;; right
+    y            u          i          o        p
+    h            j          k          l        ñ
+    n            m          ,          .        -
+    ent       bspc       lalt
+)
+
+(deflayer U_NUMERIC
+    1 2 3 4 5 
+    @oslmet @oslalt @oslctrl @oslshift f11
+    f1 f2 f3 f4 f5 
+    _  @caespc _
+    6 7 8 9 0
+    f12 @oslshift @oslctrl @oslalt @oslmet
+    f6 f7 f8 f9 f10 
+    @caebspc _ _
+)
+
+(deflayer U_SYM
+    ;; left
+    ;; la tilde castellana hace las veces de umlaut cuando esta sifteada
+    ´           @comillas     º          @equals         '
+    @exclam     @arroba       @hash      @dollar         @percent
+    @carrot     @ampersand    @virgu     `               ç
+    ;; thumb
+    @lslast     @caespc        _     
+    ;; right
+    @winbar    @opbracket     @pipe      @clbracket     @linbar
+    @plus      @oslshift      @oslctrl   @oslalt        @oslmet
+    @opques    @opkeys        @aste      @clkeys        @clques
+    ;; thumb
+    @caebspc             _ _
+)
+
+(deflayer U_NAV
+    ;; left
+    esc       mute       vold     volu      _
+    @oslmet   @oslalt    @dtc     @fts      _
+    caps      pp          next    prev      _
+    ;; thumbs
+    _         @caespc       _      
+    ;; right
+    home      pgup        pgdn       end    del
+    left      down        up         right  tab
+    ent       pgdn        _          _      _
+    ;; thumbs
+    @caebspc             @lslast _
+)
+
+(defchords example 500
+  (spc ) spc
+  (bspc) bspc
+  (spc bspc) esc
+)
+
+(defalias
+  caespc (chord example spc)  
+  caebspc (chord example bspc)  
+)
+
+
