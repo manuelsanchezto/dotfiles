@@ -1,0 +1,109 @@
+(defcfg 
+   process-unmapped-keys no
+   concurrent-tap-hold yes
+   block-unmapped-keys yes
+
+)
+
+(deflocalkeys-win
+;; found them on qmk config when using the kb the keyCode
+  ñ 192
+  ¡ 221
+  ´ 222
+  º 220
+  ` 186
+  ç 191
+  ' 219
+  + 187
+  
+)
+
+
+(defalias
+  lnav (layer-while-held U_NAV_NUM)
+  lsym (layer-while-held U_SYM)
+  lsfu (layer-while-held U_FUN)
+)
+
+(defalias
+  sftab  S-tab
+  dqut   S-2
+  caret  S-`
+  clques S-'
+  opques S-¡
+  excl   S-1
+  at     RA-2
+  hash   RA-3
+  dol    S-4
+  per    S-5
+  pipe   RA-1
+  ampr   S-6
+  ocor   RA-`
+  ccor   RA-+
+  mnq    <
+  myq    S-<
+  opar   S-8
+  cpar   S-9
+  okey   RA-´
+  ckey   RA-ç
+  eq     S-0
+  colon  S-.
+  bar    S-7
+  wbar   RA-º
+  ast    S-+
+  bbaj   S--
+  virg   RA-4
+  pyc    S-,
+)
+
+(defsrc
+   q     w    e    r    t    y    u    i    o    p  
+   a     s    d    f    g    h    j    k    l    ñ
+   z     x    c    v    b    n    m    ,    .    -
+             1 2 3 4 5 6
+)
+
+(deflayer base
+   q     w    e    r    t    y    u    i    o    p  
+   a     s    d    f    g    h    j    k    l    ñ
+   z     x    c    v    b    n    m    ,    .    -  
+            lctrl spc @lsym  @lnav lsft lalt 
+)
+
+(deflayer U_NAV_NUM
+   esc   lalt  @sftab  tab   @caret      home pgup pgdn end   bspc  
+   1     2     3       4     5           left down up   right ent
+   6     7     8       9     0           _    _    _    _      del 
+              _ spc @lsfu                       _    _     _ 
+)
+
+;;`"^?`   [<=>]
+;;!@#$%   {(:)}
+;;\~|&;   /*-+_
+(deflayer U_SYM
+   ´     @dqut @caret @clques `        @ocor @mnq  @eq    @myq  @ccor  
+   @excl @at   @hash  @dol    @per     @okey @opar @colon @cpar @ckey
+   @wbar @virg @pipe  @ampr    @pyc       @bar  @ast  -      +  @bbaj 
+               _      _        _       @lsfu  _  _ 
+)
+
+(defalias
+  cb (layer-switch base)
+)
+
+(deflayer U_FUN
+   _ _ _ _ _     _ _ _ _ _
+   _ _ _ _ lrld  _ _ _ _ _
+   _ _ _ _ _     _ _ _ _ _
+   _ _ _  _ _ _
+)
+
+(defchordsv2 
+   (spc lsft)   met   200 all-released ()
+   (. -)        @meh  200 all-released ()
+)
+ 
+(defalias
+  meh  (multi ctl alt sft)   
+)
+ 
