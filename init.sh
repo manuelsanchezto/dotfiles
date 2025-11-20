@@ -55,15 +55,11 @@ echo 'eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> "$HOME/.config/fis
 echo "[10/10] Clonando repositorio y copiando sesionizer..."
 
 # Clone the repo temporally
-git clone --depth 1 https://github.com/manuelsanchezto/dotfiles.git "$HOME/tmp_repo"
 
 # Copy the script
-cp "$HOME/tmp_repo/scripts/sesionizer" "$HOME/scripts/sesionizer"
+cp "./dotfiles/scripts/sesionizer" "$HOME/scripts/sesionizer"
 
 # Give execution permissions
 chmod +x "$HOME/scripts/sesionizer"
-
-# Delete temporal repo
-rm -rf "$HOME/tmp_repo"
 
 echo "All done! 🎉"
