@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -e
+
+WORKSPACE="$HOME/workspace"
+USERSPACE="$HOME/userspace"
+
+# 1. Recoger carpetas de primer nivel
+projects=$(find "$WORKSPACE" "$USERSPACE" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+
+# 2. Selector con fzf
+selection=$(printf '%s\n' $projects | fzf --prompt="Selecciona un proyecto: ")
+
+[ -z "$selection" ] && exit 0  # Si no selecciona nada, salir
+
+# 3. Determinar prefijo según origen
+if [[ "$selection" == "$WORKSPACE"* ]]; then
+    prefix="w_"
+elif [[ "$selection" == "$USERSPACE"* ]]; then
+    prefix="u_"
+else
+    prefix="x_"   # por si acaso
+fi
+
+# Nombre base = nombre de la carpeta
+basename=$(basename "$selection")
+
+# 4. Detectar si es repo git (en cualquier nivel inferior)
+if git -C "$selection" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    # Buscar el worktree real (por si usa múltiples)
+    wt=$(git -C "$selection" rev-parse --path-format=absolute --show-toplevel 2>/dev/null)
+
+    # Nombre del worktree
+    wt_name=$(basename "$wt")
+
+    session_name="${prefix}${basename}_${wt_name}"
+else
+    session_name="${prefix}${basename}"
+fi
+
+# 5. Ver si la sesión ya existe
+if tmux has-session -t "$session_name" 2>/dev/null; then
+    echo "Conectando a la sesión existente: $session_name"
+    tmux attach-session -t "$session_name"
+else
+    echo "Creando nueva sesión tmux: $session_name"
+    tmux new-session -s "$session_name" -c "$selection"
+fi
+
