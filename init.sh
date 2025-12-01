@@ -62,4 +62,9 @@ cp "./dotfiles/scripts/sesionizer" "$HOME/scripts/sesionizer"
 # Give execution permissions
 chmod +x "$HOME/scripts/sesionizer"
 
+sudo apt install flatpak
+sudo apt install gnome-software-plugin-flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+# MISSING HOW TO INSTALL ZEN BROWSER FORM THIS SPOT
 echo "All done! 🎉"
